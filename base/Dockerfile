@@ -43,13 +43,13 @@ RUN mkdir -p /tmp/scion/ && \
     rm -rf /tmp/scion /var/lib/apt/lists/*
 
 # Copy go application files
-COPY /censorshipControl/scion-api-server        /usr/local/bin/
+COPY /scion-control/scion-api-server        /usr/local/bin/
 
 # Change permissions
 RUN chmod +x /usr/local/bin/scion-api-server
 
 # Copy systemd unit files for node-capture and server
-COPY /censorshipControl/systemd /etc/systemd/system
+COPY /scion-control/systemd /etc/systemd/system
 
 RUN mkdir -p /data/capture
 
@@ -104,10 +104,10 @@ RUN chmod +x pki-generation-isd03.bash && ./pki-generation-isd03.bash
 RUN chmod +x pki-generation-isd04.bash && ./pki-generation-isd04.bash
 
 # Persist the generated ISD TRC file.
-RUN ls -l /tmp/tutorial-scion-certs-isd01 && mv /tmp/tutorial-scion-certs-isd01/ISD15-B1-S1.trc /etc/scion/certs/
-RUN ls -l /tmp/tutorial-scion-certs-isd02 && mv /tmp/tutorial-scion-certs-isd02/ISD16-B1-S1.trc /etc/scion/certs/
-RUN ls -l /tmp/tutorial-scion-certs-isd03 && mv /tmp/tutorial-scion-certs-isd03/ISD17-B1-S1.trc /etc/scion/certs/
-RUN ls -l /tmp/tutorial-scion-certs-isd04 && mv /tmp/tutorial-scion-certs-isd04/ISD18-B1-S1.trc /etc/scion/certs/
+RUN ls -l /tmp/tutorial-scion-certs-isd01 && mv /tmp/tutorial-scion-certs-isd01/ISD16-B1-S1.trc /etc/scion/certs/
+RUN ls -l /tmp/tutorial-scion-certs-isd02 && mv /tmp/tutorial-scion-certs-isd02/ISD17-B1-S1.trc /etc/scion/certs/
+RUN ls -l /tmp/tutorial-scion-certs-isd03 && mv /tmp/tutorial-scion-certs-isd03/ISD18-B1-S1.trc /etc/scion/certs/
+RUN ls -l /tmp/tutorial-scion-certs-isd04 && mv /tmp/tutorial-scion-certs-isd04/ISD19-B1-S1.trc /etc/scion/certs/
 
 # Persist the generated files.
 RUN mkdir -p /opt/tutorial-pki && \

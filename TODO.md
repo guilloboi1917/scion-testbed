@@ -1,5 +1,5 @@
 **TODO**:
-- [x] (incomplete) Get HTTP API to work for tcpdump logging and file sending (see censorshipControl/node-capture.go and censorshipControl/node-capture-server.go)
+- [x] (incomplete) Get HTTP API to work for tcpdump logging and file sending (see scion-control/node-capture.go and scion-control/node-capture-server.go)
 - [ ] Basic HTTP API to control scion services (e.g. systemctl)
 - [x] Set HTTP header for scion api server endpoints to include Content-Type = application/json
 - [x] Extend to 4 ISD setup (new pki-generation file, new services/Dockerfile/Topology files, etc.)
