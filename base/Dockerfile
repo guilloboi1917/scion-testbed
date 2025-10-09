@@ -42,23 +42,24 @@ RUN mkdir -p /tmp/scion/ && \
     apt-get install -y --allow-downgrades --no-install-recommends $(find /tmp/scion -name '*.deb') && \
     rm -rf /tmp/scion /var/lib/apt/lists/*
 
+
 # Copy go application files
-COPY /scion-control/scion-api-server        /usr/local/bin/
+COPY /scion-node-manager/scion-node-manager        /usr/local/bin/
 
 # Change permissions
-RUN chmod +x /usr/local/bin/scion-api-server
+RUN chmod +x /usr/local/bin/scion-node-manager
 
 # Copy systemd unit files for node-capture and server
-COPY /scion-control/systemd /etc/systemd/system
+COPY /scion-node-manager/systemd /etc/systemd/system
 
 RUN mkdir -p /data/capture
 
-RUN systemctl enable scion-api-server.service
+RUN systemctl enable scion-node-manager.service
 
-# Create directories to store data from scion-api-server
-RUN mkdir -p /var/lib/scion-api-server/ping-results \
-    /var/lib/scion-api-server/scion-ping-results \
-    /var/lib/scion-api-server/packet-captures
+# Create directories to store data from scion-node-manager
+RUN mkdir -p /var/lib/scion-node-manager/ping-results \
+    /var/lib/scion-node-manager/scion-ping-results \
+    /var/lib/scion-node-manager/packet-captures
     
 
 # We also install the shttp server example
