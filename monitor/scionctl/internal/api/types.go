@@ -10,9 +10,20 @@ type APIResponse struct {
 	Data    interface{} `json:"data,omitempty"`
 }
 
+type FileInfo struct {
+	Index int32  `json:"index"`
+	Name  string `json:"name"`
+	Size  int64  `json:"size"`
+}
+
 type PingStartRequest struct {
 	Dst   string `json:"dst"`
 	Count *int   `json:"count,omitempty"`
+}
+
+type PingListAPIResponse struct {
+	APIResponse
+	Data []FileInfo `json:"data,omitempty"` // Override the Data field
 }
 
 type ScionNode struct {

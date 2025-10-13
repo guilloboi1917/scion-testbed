@@ -35,7 +35,7 @@ func (c *Client) StartPing(dstURL string, count int) (resp *http.Response, err e
 	}
 
 	// Start new ping request
-	resp, err = c.client.Post("http://"+c.baseURL+PingStartRoute, "application/json", bytes.NewBuffer(body))
+	resp, err = c.client.Post(c.baseURL+PingStartRoute, "application/json", bytes.NewBuffer(body))
 	return
 }
 
@@ -50,6 +50,16 @@ func (c *Client) StartPing(dstURL string, count int) (resp *http.Response, err e
 // - err: error if the request fails, otherwise nil
 func (c *Client) StopPing() (resp *http.Response, err error) {
 	// Start stop ping request
-	resp, err = c.client.Post("http://"+c.baseURL+PingStopRoute, "application/json", nil)
+	resp, err = c.client.Post(c.baseURL+PingStopRoute, "application/json", nil)
+	return
+}
+
+// ResultsPing issues a GET request to get the available ping results on a host
+//
+// Returns:
+// - resp: pointer to http.Response containing the server's response
+// - err: error if the request fails, otherwise nil
+func (c *Client) GetResultsPing() (resp *http.Response, err error) {
+	resp, err = c.client.Get(c.baseURL + PingListAvailableRoute)
 	return
 }

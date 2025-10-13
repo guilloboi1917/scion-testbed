@@ -20,13 +20,17 @@ func (pm *ProcessManager) StartProcess(args []string, logFileName string, comman
 	outputFile := pm.LogDir + logFileName
 	pm.Cmd = exec.Command(command, args...)
 	file, err := os.OpenFile(outputFile, os.O_CREATE|os.O_WRONLY, 0644)
+	log.Printf("preparing logfile: %s for process (PID: %d)", file.Name(), pm.State.PID)
 	if err != nil {
+		log.Printf("couldn't open log file: %v", err)
 		return err
 	}
 	defer file.Close()
 	pm.Cmd.Stdout = file
 	pm.Cmd.Stderr = file
 	if err := pm.Cmd.Start(); err != nil {
+		log.Printf("couldn't start process: (PID: %d). Error: %v", pm.State.PID, err)
+
 		return err
 	}
 	*pm.State = CommandState{
@@ -43,6 +47,8 @@ func (pm *ProcessManager) StartProcess(args []string, logFileName string, comman
 			// log the error
 			log.Printf("process (PID: %d) finished with error: %v", pm.State.PID, err)
 		}
+		log.Printf("process (PID: %d) finished, logfile: %s", pm.State.PID, outputFile)
+
 		pm.State.InProgress = false
 		pm.State.PID = 0
 	}()

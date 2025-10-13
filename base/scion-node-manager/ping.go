@@ -124,6 +124,8 @@ func stopPing(w http.ResponseWriter, r *http.Request) {
 
 	err := pingManager.StopProcess()
 	if err != nil {
+		log.Printf("Failed to stop ping (PID: %d)", stoppedPID)
+
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(APIResponse{
 			Status:  "error",
@@ -132,6 +134,7 @@ func stopPing(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Printf("Stopped ping (PID: %d)", stoppedPID)
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(APIResponse{
 		Status:  "success",

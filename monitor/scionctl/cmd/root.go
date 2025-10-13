@@ -11,8 +11,7 @@ import (
 	"os"
 
 	"scionctl/internal/config"
-
-	"scionctl/internal/printer"
+	"scionctl/internal/pprinter"
 
 	"github.com/spf13/cobra"
 )
@@ -73,7 +72,7 @@ func initConfig() {
 
 		if err != nil {
 			fmt.Printf("Error fetching config: %s\n", cfgFile)
-			printer.PrintError(err)
+			pprinter.PrintError(err)
 			os.Exit(1)
 		}
 	}

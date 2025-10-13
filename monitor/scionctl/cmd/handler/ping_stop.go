@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"scionctl/internal/api"
 	"scionctl/internal/config"
-	"scionctl/internal/printer"
+	"scionctl/internal/pprinter"
 	"time"
 )
 
@@ -15,19 +15,19 @@ func HandlePingStop(args []string) {
 	node, exist := config.CmdNodeManager.GetNode(args[0])
 
 	if !exist {
-		printer.PrintError(fmt.Errorf("Node [%s] does not exist", args[0]))
+		pprinter.PrintError(fmt.Errorf("Node [%s] does not exist", args[0]))
 		return
 	}
 
 	c := api.NewClient(api.ClientConfig{
-		BaseURL: node.Addr + ":" + fmt.Sprint(node.Port), Timeout: time.Second * 5,
+		BaseURL: "http://" + node.Addr + ":" + fmt.Sprint(node.Port), Timeout: time.Second * 5,
 	})
 
 	resp, err := c.StopPing()
 	if err != nil {
-		printer.PrintError(err)
+		pprinter.PrintError(err)
 		return
 	}
 
-	printer.HTTPResponseToStdout(resp, err)
+	pprinter.HTTPResponseToStdout(resp, err)
 }
