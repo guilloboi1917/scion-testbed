@@ -117,4 +117,4 @@ RUN mkdir -p /opt/tutorial-pki && \
     cp -r /tmp/tutorial-scion-certs-isd03/* /opt/tutorial-pki/ && \
     cp -r /tmp/tutorial-scion-certs-isd04/* /opt/tutorial-pki/
 
-RUN cd /etc/scion/
+WORKDIR /etc/scion/

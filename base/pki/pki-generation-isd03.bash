@@ -35,9 +35,11 @@ authoritative_ases = ["ffaa:1:1", "ffaa:1:2", "ffaa:1:3"]
 cert_files = ["AS11/sensitive-voting.pem", "AS11/regular-voting.pem", "AS11/cp-root.pem", "AS12/cp-root.pem", "AS13/sensitive-voting.pem", "AS13/regular-voting.pem"]
 
 [validity]
-not_before = $(date +%s)
+not_before = __CURRENT_TIMESTAMP__
 validity = "365d"
 EOF
+
+sed -i "s/__CURRENT_TIMESTAMP__/$(date +%s)/" trc-B1-S1-pld.tmpl
 
 scion-pki trc payload --out=tmp/ISD18-B1-S1.pld.der --template trc-B1-S1-pld.tmpl
 rm trc-B1-S1-pld.tmpl

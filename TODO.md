@@ -10,3 +10,5 @@
 - [ ] Adapt Makefile to run without building anew everytime
 - [ ] Fix: When running make up after NOT running make purge, there is an error with the pki-generation scripts
 - [ ] Document extensibilty of network
+- [ ] Create Chaos Injection Endpoint
+- [ ] Define Chaos Types (meddle with TRCs, throttle network speeds, increase latency, send spoofed packages)
