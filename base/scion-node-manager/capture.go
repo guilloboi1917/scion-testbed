@@ -11,6 +11,9 @@ import (
 	"time"
 )
 
+// Could consider changing to this:
+// https://github.com/ghedo/go.pkt
+
 var (
 	captureCmd                   *exec.Cmd
 	captureMutex                 sync.Mutex
@@ -22,6 +25,7 @@ func initCaptureState() {
 	currentCapture = CommandState{InProgress: false}
 }
 
+// TODO add duration parameter maybe?
 func startCapture(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if r.Method != http.MethodPost {
@@ -34,15 +38,15 @@ func startCapture(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var request struct {
-		Interface string `json:"interface"`
+		Interface string `json:"interface,omitempty"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-		request.Interface = "eth0"
+		request.Interface = "any"
 	}
 
 	if request.Interface == "" {
-		request.Interface = "eth0"
+		request.Interface = "any"
 	}
 
 	captureMutex.Lock()

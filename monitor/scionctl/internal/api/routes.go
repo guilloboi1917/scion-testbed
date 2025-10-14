@@ -16,4 +16,6 @@ var (
 	CaptureStopRoute          string = "/api/capture/stop"
 	CaptureListAvailableRoute string = "/api/capture/files"
 	CaptureStatusRoute        string = "/api/capture/status"
+
+	GetFileRoute string = "/api/file"
 )

@@ -22,12 +22,13 @@ type PingStartRequest struct {
 	Count *int   `json:"count,omitempty"`
 }
 
-type PingListAPIResponse struct {
+// More specific response which overrides interface{}
+type FileInfosAPIResponse struct {
 	APIResponse
 	Data []FileInfo `json:"data,omitempty"` // Override the Data field
 }
 
-type PingStatusAPIResponse struct {
+type StatusAPIResponse struct {
 	APIResponse
 	Data CommandState `json:"data,omitempty"`
 }
@@ -62,6 +63,7 @@ func NodeToIP(node ScionNode) net.IPAddr {
 }
 
 func NodeToScionAddress(node *ScionNode) string {
+	// Scion address from node including validation
 	var scionaddr = fmt.Sprintf("%d-ffaa:1:%d,%s", node.ISD, node.AS, node.ScionDAddr)
 	_, err := addr.ParseAddr(scionaddr)
 	if err != nil {

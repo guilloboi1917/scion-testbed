@@ -3,7 +3,9 @@ package api
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"net/url"
 )
 
 // Defines all handler function for ping commands
@@ -67,5 +69,27 @@ func (c *Client) GetResultsPing() (resp *http.Response, err error) {
 // TODO Add Doc
 func (c *Client) StatusPing() (resp *http.Response, err error) {
 	resp, err = c.client.Get(c.baseURL + PingStatusRoute)
+	return
+}
+
+// TODO Add Doc
+// TODO currently only get file by name is supported
+func (c *Client) GetFile(name string, src string) (resp *http.Response, err error) {
+	baseURL := c.baseURL + GetFileRoute
+	parsedURL, err := url.Parse(baseURL)
+	if err != nil {
+		fmt.Println("Error parsing base URL:", err)
+		return
+	}
+
+	// set query params
+	queryParms := url.Values{}
+	queryParms.Add("name", name)
+	queryParms.Add("src", src)
+
+	parsedURL.RawQuery = queryParms.Encode()
+	apiURL := parsedURL.String()
+
+	resp, err = c.client.Get(apiURL)
 	return
 }

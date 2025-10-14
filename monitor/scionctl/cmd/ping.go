@@ -9,7 +9,7 @@ import (
 
 // startping represents the ping command
 var PingCmd = &cobra.Command{
-	Use:   "ping",
+	Use:   "ping <command>",
 	Short: "Manage ping operations between nodes",
 	Long:  `Start, stop, and monitor ping operations between SCION nodes`,
 

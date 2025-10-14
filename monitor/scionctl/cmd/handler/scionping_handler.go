@@ -79,7 +79,7 @@ func HandleScionPingStatus(args []string) {
 		return
 	}
 
-	var apiResp = api.PingStatusAPIResponse{}
+	var apiResp = api.StatusAPIResponse{}
 	err = json.Unmarshal(bodyBytes, &apiResp)
 	if err != nil {
 		pprinter.PrintError(err)
@@ -119,7 +119,7 @@ func HandleScionPingList(args []string) {
 		return
 	}
 
-	var apiResp = api.PingListAPIResponse{}
+	var apiResp = api.FileInfosAPIResponse{}
 	err = json.Unmarshal(bodyBytes, &apiResp)
 	if err != nil {
 		pprinter.PrintError(err)

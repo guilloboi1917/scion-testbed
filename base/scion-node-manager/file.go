@@ -6,9 +6,11 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"slices"
 )
 
 func getFilesFromDirectory(directory string) ([]FileInfo, error) {
+	// This sorts them according to string comparison
 	files, err := os.ReadDir(directory)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read directory: %w", err)
@@ -45,12 +47,14 @@ func fileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	srcTypes := []string{"ping", "scionping", "capture"}
+
 	src := r.URL.Query().Get("src")
-	if src == "" {
+	if !slices.Contains(srcTypes, src) {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(APIResponse{
 			Status:  "error",
-			Message: "Invalid request - No src found (ping | scionping | capture)",
+			Message: "Invalid request - Wrong or invalid src type found -> (ping | scionping | capture)",
 		})
 		return
 	}
@@ -81,7 +85,19 @@ func fileHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// For file download, set appropriate headers and serve file
-	w.Header().Set("Content-Type", "application/octet-stream")
-	http.ServeFile(w, r, fileLocation)
+	// Disable compression
+	w.Header().Set("Content-Encoding", "identity")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+
+	if src == "capture" {
+		// Use appropriate Content-Type for pcap
+		w.Header().Set("Content-Type", "application/vnd.tcpdump.pcap")
+		w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s\"", fileName))
+		http.ServeFile(w, r, fileLocation)
+	} else {
+		// For file download, set appropriate headers and serve file
+		w.Header().Set("Content-Type", "application/octet-stream")
+		http.ServeFile(w, r, fileLocation)
+	}
+
 }
