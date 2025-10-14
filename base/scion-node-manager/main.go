@@ -21,6 +21,7 @@ func main() {
 	http.HandleFunc("/api/dispatch/ping/start", startPing)
 	http.HandleFunc("/api/dispatch/ping/stop", stopPing)
 	http.HandleFunc("/api/dispatch/ping/files", getAvailablePingResults)
+	http.HandleFunc("/api/dispatch/ping/status", getPingStatus)
 
 	// Register ScionPing API endpoints
 	http.HandleFunc("/api/dispatch/scionping/start", startScionPing)

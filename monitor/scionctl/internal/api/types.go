@@ -1,6 +1,13 @@
 package api
 
-import "net"
+import (
+	"fmt"
+	"net"
+	"os"
+	"time"
+
+	"github.com/scionproto/scion/pkg/addr"
+)
 
 // Define request and response types
 
@@ -8,12 +15,6 @@ type APIResponse struct {
 	Status  string      `json:"status"`
 	Message string      `json:"message,omitempty"`
 	Data    interface{} `json:"data,omitempty"`
-}
-
-type FileInfo struct {
-	Index int32  `json:"index"`
-	Name  string `json:"name"`
-	Size  int64  `json:"size"`
 }
 
 type PingStartRequest struct {
@@ -26,15 +27,46 @@ type PingListAPIResponse struct {
 	Data []FileInfo `json:"data,omitempty"` // Override the Data field
 }
 
+type PingStatusAPIResponse struct {
+	APIResponse
+	Data CommandState `json:"data,omitempty"`
+}
+
+// Structs used on node side
+
 type ScionNode struct {
-	Addr string
-	Name string
-	Port int16
-	ISD  int16
-	AS   int16
+	Addr       string
+	Name       string
+	Port       int16
+	ISD        int16
+	AS         int16
+	ScionDAddr string
+}
+
+type FileInfo struct {
+	Index int32  `json:"index"`
+	Name  string `json:"name"`
+	Size  int64  `json:"size"`
+}
+
+type CommandState struct {
+	InProgress bool      `json:"in_progress"`
+	PID        int       `json:"pid,omitempty"`
+	StartTime  time.Time `json:"start_time,omitempty"`
+	OutputFile string    `json:"output_file,omitempty"`
 }
 
 func NodeToIP(node ScionNode) net.IPAddr {
 	// Cast it to net.IPAddr
 	return net.IPAddr{IP: net.IP(node.Addr)}
+}
+
+func NodeToScionAddress(node *ScionNode) string {
+	var scionaddr = fmt.Sprintf("%d-ffaa:1:%d,%s", node.ISD, node.AS, node.ScionDAddr)
+	_, err := addr.ParseAddr(scionaddr)
+	if err != nil {
+		fmt.Printf("error: {%v}", err)
+		os.Exit(1)
+	}
+	return scionaddr
 }

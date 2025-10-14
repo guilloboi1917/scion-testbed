@@ -8,6 +8,7 @@ import (
 )
 
 // Define config type for our node list
+// We will parse from the config.yaml file
 type NodeConfig struct {
 	Hosts []struct {
 		Name    string `yaml:"name"`
@@ -15,12 +16,14 @@ type NodeConfig struct {
 		ISD     int16  `yaml:"isd"`
 		AS      int16  `yaml:"as"`
 	} `yaml:"hosts"`
-	DefaultPort int16 `yaml:"default_port"`
+	DefaultPort          int16  `yaml:"default_port"`
+	DefaultSciondAddress string `yaml:"default_sciond_address"`
 }
 
 type NodeManager struct {
-	nodes map[string]*api.ScionNode
-	port  int16
+	nodes          map[string]*api.ScionNode
+	port           int16
+	sciond_address string
 }
 
 // To be used globally
@@ -39,18 +42,20 @@ func InitializeManager(configPath string) error {
 func NewNodeManager(config *NodeConfig) (*NodeManager, error) {
 	nm := &NodeManager{
 		nodes: make(map[string]*api.ScionNode),
-		// Share default port across all nodes
-		port: config.DefaultPort,
+		// Share default port and sciond address across all nodes
+		port:           config.DefaultPort,
+		sciond_address: config.DefaultSciondAddress,
 	}
 
 	// Populate nodes map
 	for _, host := range config.Hosts {
 		nm.nodes[host.Name] = &api.ScionNode{
-			Addr: host.Address,
-			Name: host.Name,
-			Port: nm.port,
-			ISD:  host.ISD,
-			AS:   host.AS,
+			Addr:       host.Address,
+			Name:       host.Name,
+			Port:       nm.port,
+			ISD:        host.ISD,
+			AS:         host.AS,
+			ScionDAddr: nm.sciond_address,
 		}
 	}
 	return nm, nil
@@ -64,11 +69,12 @@ func (nm *NodeManager) GetNode(name string) (*api.ScionNode, bool) {
 	}
 	// Return a copy to avoid modification
 	return &api.ScionNode{
-		Addr: node.Addr,
-		Name: node.Name,
-		Port: node.Port,
-		ISD:  node.ISD,
-		AS:   node.AS,
+		Addr:       node.Addr,
+		Name:       node.Name,
+		Port:       node.Port,
+		ISD:        node.ISD,
+		AS:         node.AS,
+		ScionDAddr: node.ScionDAddr,
 	}, exists
 }
 

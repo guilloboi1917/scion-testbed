@@ -39,7 +39,7 @@ func (c *Client) StartPing(dstURL string, count int) (resp *http.Response, err e
 	return
 }
 
-// StartPing issues a POST request to start a ping at to dst with count
+// StopPing issues a POST request to stop a ping at dst
 //
 // Parameters:
 // - dst: destination IP address (string)
@@ -61,5 +61,11 @@ func (c *Client) StopPing() (resp *http.Response, err error) {
 // - err: error if the request fails, otherwise nil
 func (c *Client) GetResultsPing() (resp *http.Response, err error) {
 	resp, err = c.client.Get(c.baseURL + PingListAvailableRoute)
+	return
+}
+
+// TODO Add Doc
+func (c *Client) StatusPing() (resp *http.Response, err error) {
+	resp, err = c.client.Get(c.baseURL + PingStatusRoute)
 	return
 }

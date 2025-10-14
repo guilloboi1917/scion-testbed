@@ -37,6 +37,27 @@ func FileInfosTable(fileInfos []api.FileInfo) {
 	t.Render()
 }
 
+func PrintStatus(cs api.CommandState) {
+	status := text.FgRed.Sprint("No")
+	if cs.InProgress {
+		status = text.FgGreen.Sprint("Yes")
+	}
+
+	var formattedString = fmt.Sprintf(`%s
+%s: %s
+%s: %d
+%s: %s
+%s: %s`,
+		text.Bold.Sprint("Command Status"),
+		text.FgBlue.Sprint("In Progress"), status,
+		text.FgBlue.Sprint("PID"), cs.PID,
+		text.FgBlue.Sprint("Start Time"), cs.StartTime.Format("2006-01-02 15:04:05"),
+		text.FgBlue.Sprint("Output File"), cs.OutputFile,
+	)
+
+	fmt.Println(formattedString)
+}
+
 // Simple HTTP Response to Stdout
 func HTTPResponseToStdout(resp *http.Response, err error) {
 	if err != nil {

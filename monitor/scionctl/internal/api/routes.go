@@ -7,8 +7,8 @@ var (
 	PingListAvailableRoute string = "/api/dispatch/ping/files"
 	PingStatusRoute        string = "/api/dispatch/ping/status"
 
-	ScionStartPingRoute     string = "/api/dispatch/scionping/start"
-	ScionStopPingRoute      string = "/api/dispatch/scionping/stop"
+	ScionPingStartRoute     string = "/api/dispatch/scionping/start"
+	ScionPingStopRoute      string = "/api/dispatch/scionping/stop"
 	ScionListAvailableRoute string = "/api/dispatch/scionping/files"
 	ScionPingStatusRoute    string = "/api/dispatch/scionping/status"
 

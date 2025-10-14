@@ -169,3 +169,24 @@ func getAvailablePingResults(w http.ResponseWriter, r *http.Request) {
 		Data:   fileInfos,
 	})
 }
+
+func getPingStatus(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	if r.Method != http.MethodGet {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		json.NewEncoder(w).Encode(APIResponse{
+			Status:  "error",
+			Message: "Invalid Method - use GET",
+		})
+		return
+	}
+
+	pingMutex.Lock()
+	defer pingMutex.Unlock()
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(APIResponse{
+		Status: "success",
+		Data:   currentPing,
+	})
+}

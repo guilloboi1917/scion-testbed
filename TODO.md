@@ -12,3 +12,5 @@
 - [ ] Document extensibilty of network
 - [ ] Create Chaos Injection Endpoint
 - [ ] Define Chaos Types (meddle with TRCs, throttle network speeds, increase latency, send spoofed packages)
+- [ ] Systemctl for scionctl
+- [ ] Fix "chain must contain two certificates" in journactl for cs.service

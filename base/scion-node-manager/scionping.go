@@ -11,6 +11,10 @@ import (
 	"github.com/scionproto/scion/pkg/addr"
 )
 
+// TODO
+// https://docs.scion.org/en/latest/command/scion/scion_ping.html#scion-ping
+// When the --healthy-only option is set, ping first determines healthy paths through probing and chooses amongst them.
+
 var (
 	scionPingMutex          sync.Mutex
 	currentScionPing        CommandState
@@ -39,7 +43,7 @@ func startScionPing(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var request struct {
-		Addr  string `json:"addr"`
+		Dst   string `json:"dst"`
 		Count *int   `json:"count,omitempty"`
 	}
 
@@ -52,12 +56,12 @@ func startScionPing(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := addr.ParseAddr(request.Addr)
+	_, err := addr.ParseAddr(request.Dst)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(APIResponse{
 			Status:  "error",
-			Message: "Invalid Scion Address",
+			Message: fmt.Sprintf("Invalid Scion Address %s. error: %s", request.Dst, err.Error()),
 		})
 		return
 	}
@@ -74,7 +78,7 @@ func startScionPing(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	args := []string{"ping", request.Addr}
+	args := []string{"ping", request.Dst}
 	if request.Count != nil {
 		countStr := fmt.Sprintf("%d", *request.Count)
 		args = append([]string{"-c", countStr}, args...)
@@ -89,7 +93,7 @@ func startScionPing(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-	log.Printf("Started scion ping (PID: %d), dst: %s", currentScionPing.PID, request.Addr)
+	log.Printf("Started scion ping (PID: %d), dst: %s", currentScionPing.PID, request.Dst)
 	json.NewEncoder(w).Encode(APIResponse{
 		Status:  "success",
 		Message: fmt.Sprintf("Scion Pinging started (PID: %d)", currentScionPing.PID),

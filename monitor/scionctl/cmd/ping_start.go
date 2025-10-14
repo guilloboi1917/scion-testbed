@@ -13,8 +13,8 @@ var (
 	pingCount int
 )
 
-// PingStartCmd represents the start ping command
-var PingStartCmd = &cobra.Command{
+// pingStartCmd represents the start ping command
+var pingStartCmd = &cobra.Command{
 	Use:   "start <source> <target>",
 	Args:  cobra.ExactArgs(2),
 	Short: "Start a ping operation between two nodes",
@@ -26,6 +26,6 @@ var PingStartCmd = &cobra.Command{
 }
 
 func init() {
-	PingCmd.AddCommand(PingStartCmd)
-	PingStartCmd.Flags().IntVarP(&pingCount, "count", "c", -1, "Number of ping packets to send")
+	PingCmd.AddCommand(pingStartCmd)
+	pingStartCmd.Flags().IntVarP(&pingCount, "count", "c", -1, "Number of ping packets to send")
 }
