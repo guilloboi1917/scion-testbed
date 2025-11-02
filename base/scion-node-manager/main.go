@@ -33,6 +33,7 @@ func main() {
 	http.HandleFunc("/api/file", fileHandler)
 
 	// Config API endpoints
+	http.HandleFunc("/api/policy/update", updatePolicyHandler)
 
 	log.Println("SCION AS Container API running on :8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
