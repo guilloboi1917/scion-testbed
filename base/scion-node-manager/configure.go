@@ -17,7 +17,6 @@ package main
 import (
 	"net/http"
 	"log"
-	"io/ioutil"
 	"os/exec"
 	"encoding/json"
 )
@@ -58,21 +57,24 @@ func updatePolicyHandler(w http.ResponseWriter, r *http.Request) {
     asListStr += "]"
 
     // Run sed command to update the config file
-    configFile := "policy.yaml" // Change as needed
+    configFile := "/etc/scion/policy.yaml" // Change as needed
     sedCmd := "sed"
     sedArgs := []string{
         "-i",
         "s/^[[:space:]]*AsBlackList: .*/  AsBlackList: " + asListStr + "/",
         configFile,
     }
-    if err := exec.Command(sedCmd, sedArgs...).Run(); err != nil {
+    cmd := exec.Command(sedCmd, sedArgs...)
+    output, err := cmd.CombinedOutput()
+    if err != nil {
         w.WriteHeader(http.StatusInternalServerError)
         json.NewEncoder(w).Encode(APIResponse{
             Status:  "error",
-            Message: "Failed to update config: " + err.Error(),
+            Message: "Failed to update config: " + err.Error() + " Output: " + string(output),
         })
         return
     }
+	log.Printf("Updated policy file %s with AS blacklist: %s", configFile, asListStr)
 
     json.NewEncoder(w).Encode(APIResponse{
         Status:  "success",
