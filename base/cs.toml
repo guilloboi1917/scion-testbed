@@ -19,5 +19,11 @@ connection = "/var/lib/scion/control.trust.db"
 [metrics]
 prometheus = "0.0.0.0:30452"
 
+[beaconing.policies]
+propagation = "/etc/scion/default-policy.yaml"
+core_registration = "/etc/scion/default-policy.yaml"
+up_registration = "/etc/scion/default-policy.yaml"
+down_registration = "/etc/scion/default-policy.yaml"
+
 # [api]
 # addr = "0.0.0.0:30452"
