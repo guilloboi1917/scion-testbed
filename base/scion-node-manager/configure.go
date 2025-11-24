@@ -31,6 +31,18 @@ var (
     policyFilePath = "/etc/scion/path-policy.yaml"
 )
 
+// restartScionServices restarts the SCION control service using systemctl
+func restartScionServices() error {
+    cmd := exec.Command("systemctl", "restart", "scion-control@cs.service")
+    output, err := cmd.CombinedOutput()
+    if err != nil {
+        log.Printf("Failed to restart scion-control@cs.service: %v, Output: %s", err, string(output))
+        return err
+    }
+    log.Printf("Successfully restarted scion-control@cs.service")
+    return nil
+}
+
 func updatePolicyASList(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json")
     if r.Method != http.MethodPost {
@@ -82,10 +94,14 @@ func updatePolicyASList(w http.ResponseWriter, r *http.Request) {
     }
 	log.Printf("Updated policy file %s with AS blacklist: %s", configFile, asListStr)
 
+    // Send response first, then restart services asynchronously
     json.NewEncoder(w).Encode(APIResponse{
         Status:  "success",
-        Message: "Config updated to blacklist ASes: " + asListStr,
+        Message: "Config updated to blacklist ASes: " + asListStr + ", restarting SCION control service",
     })
+
+    // Restart SCION control service asynchronously to avoid blocking the HTTP response
+    go restartScionServices()
 }
 
 func updatePolicyISDList(w http.ResponseWriter, r *http.Request) {
@@ -139,10 +155,14 @@ func updatePolicyISDList(w http.ResponseWriter, r *http.Request) {
     }
 	log.Printf("Updated policy file %s with ISD blacklist: %s", configFile, isdListStr)
 
+    // Send response first, then restart services asynchronously
     json.NewEncoder(w).Encode(APIResponse{
         Status:  "success",
-        Message: "Config updated to blacklist ISDs: " + isdListStr,
+        Message: "Config updated to blacklist ISDs: " + isdListStr + ", restarting SCION control service",
     })
+
+    // Restart SCION control service asynchronously to avoid blocking the HTTP response
+    go restartScionServices()
 }
 
 //return path-policy file
