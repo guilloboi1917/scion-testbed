@@ -19,7 +19,7 @@ var (
 
 	GetFileRoute string = "/api/file"
 
-	ConfigASListRoute   string = "/api/config/scion/path-policy/aslist"
-	ConfigISDListRoute  string = "/api/config/scion/path-policy/isdlist"
-	ConfigFileRoute     string = "/api/config/scion/path-policy/files"
+	ConfigASListRoute   string = "/api/config/path-policy/aslist"
+	ConfigISDListRoute  string = "/api/config/path-policy/isdlist"
+	ConfigFileRoute     string = "/api/config/path-policy/files"
 )

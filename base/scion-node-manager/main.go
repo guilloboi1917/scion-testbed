@@ -33,9 +33,9 @@ func main() {
 	http.HandleFunc("/api/file", fileHandler)
 
 	// Config API endpoints
-	http.HandleFunc("/api/config/scion/path-policy/aslist", updatePolicyASList)
-	http.HandleFunc("/api/config/scion/path-policy/isdlist", updatePolicyISDList)
-	http.HandleFunc("/api/config/scion/path-policy/files", getPolicyFiles)
+	http.HandleFunc("/api/config/path-policy/aslist", updatePolicyASList)
+	http.HandleFunc("/api/config/path-policy/isdlist", updatePolicyISDList)
+	http.HandleFunc("/api/config/path-policy/files", getPolicyFiles)
 
 	log.Println("SCION AS Container API running on :8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
