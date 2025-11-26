@@ -22,7 +22,7 @@
 | GET    | `/config/scion/{file}`        | Read SCION config file            |
 | POST   | `/config/firewall`            | Update firewall rules             |
 | POST   | `/config/scion/path-policy`   | Upload path-policy file           |
-| GET    | `/config/scion/path-policy`   | List path-policy files            |
+| GET    | `/config/scion/path-policy`   | Read path-policy file             |
 | POST   | `/config/scion/topology`      | Upload topology file              |
 | GET    | `/config/scion/topology`      | Get topology file                 |
 

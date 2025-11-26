@@ -60,6 +60,9 @@ RUN systemctl enable scion-node-manager.service
 RUN mkdir -p /var/lib/scion-node-manager/ping-results \
     /var/lib/scion-node-manager/scion-ping-results \
     /var/lib/scion-node-manager/packet-captures
+
+#copy path-policy file and config files
+COPY /pathpolicy.yaml /etc/scion/path-policy.yaml
     
 
 # We also install the shttp server example
