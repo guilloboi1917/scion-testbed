@@ -7,18 +7,18 @@ mkdir AS{16..20}
 
 # Create voting and root keys and (self-signed) certificates for core ASes
 pushd AS16
-scion-pki certificate create --profile=sensitive-voting <(echo '{"isd_as": "19-ffaa:1:1", "common_name": "19-ffaa:1:1 sensitive voting cert"}') sensitive-voting.pem sensitive-voting.key
-scion-pki certificate create --profile=regular-voting <(echo '{"isd_as": "19-ffaa:1:1", "common_name": "19-ffaa:1:1 regular voting cert"}') regular-voting.pem regular-voting.key
-scion-pki certificate create --profile=cp-root <(echo '{"isd_as": "19-ffaa:1:1", "common_name": "19-ffaa:1:1 cp root cert"}') cp-root.pem cp-root.key
+scion-pki certificate create --profile=sensitive-voting <(echo '{"isd_as": "19-ffaa:1:41", "common_name": "19-ffaa:1:41 sensitive voting cert"}') sensitive-voting.pem sensitive-voting.key
+scion-pki certificate create --profile=regular-voting <(echo '{"isd_as": "19-ffaa:1:41", "common_name": "19-ffaa:1:41 regular voting cert"}') regular-voting.pem regular-voting.key
+scion-pki certificate create --profile=cp-root <(echo '{"isd_as": "19-ffaa:1:41", "common_name": "19-ffaa:1:41 cp root cert"}') cp-root.pem cp-root.key
 popd
 
 pushd AS17
-scion-pki certificate create --profile=cp-root <(echo '{"isd_as": "19-ffaa:1:2", "common_name": "19-ffaa:1:2 cp root cert"}') cp-root.pem cp-root.key
+scion-pki certificate create --profile=cp-root <(echo '{"isd_as": "19-ffaa:1:42", "common_name": "19-ffaa:1:42 cp root cert"}') cp-root.pem cp-root.key
 popd
 
 pushd AS18
-scion-pki certificate create --profile=sensitive-voting <(echo '{"isd_as": "19-ffaa:1:3", "common_name": "19-ffaa:1:3 sensitive voting cert"}') sensitive-voting.pem sensitive-voting.key
-scion-pki certificate create --profile=regular-voting <(echo '{"isd_as": "19-ffaa:1:3", "common_name": "19-ffaa:1:3 regular voting cert"}') regular-voting.pem regular-voting.key
+scion-pki certificate create --profile=sensitive-voting <(echo '{"isd_as": "19-ffaa:1:43", "common_name": "19-ffaa:1:43 sensitive voting cert"}') sensitive-voting.pem sensitive-voting.key
+scion-pki certificate create --profile=regular-voting <(echo '{"isd_as": "19-ffaa:1:43", "common_name": "19-ffaa:1:43 regular voting cert"}') regular-voting.pem regular-voting.key
 popd
 
 # Create the TRC
@@ -30,8 +30,8 @@ serial_version = 1
 base_version = 1
 voting_quorum = 2
 
-core_ases = ["ffaa:1:1", "ffaa:1:2", "ffaa:1:3"]
-authoritative_ases = ["ffaa:1:1", "ffaa:1:2", "ffaa:1:3"]
+core_ases = ["ffaa:1:41", "ffaa:1:42", "ffaa:1:43"]
+authoritative_ases = ["ffaa:1:41", "ffaa:1:42", "ffaa:1:43"]
 cert_files = ["AS16/sensitive-voting.pem", "AS16/regular-voting.pem", "AS16/cp-root.pem", "AS17/cp-root.pem", "AS18/sensitive-voting.pem", "AS18/regular-voting.pem"]
 
 [validity]
@@ -55,18 +55,18 @@ rm tmp -r
 
 # Create CA key and certificate for issuing ASes
 pushd AS16
-scion-pki certificate create --profile=cp-ca <(echo '{"isd_as": "19-ffaa:1:1", "common_name": "19-ffaa:1:1 CA cert"}') cp-ca.pem cp-ca.key --ca cp-root.pem --ca-key cp-root.key
+scion-pki certificate create --profile=cp-ca <(echo '{"isd_as": "19-ffaa:1:41", "common_name": "19-ffaa:1:41 CA cert"}') cp-ca.pem cp-ca.key --ca cp-root.pem --ca-key cp-root.key
 popd
 pushd AS17
-scion-pki certificate create --profile=cp-ca <(echo '{"isd_as": "19-ffaa:1:2", "common_name": "19-ffaa:1:2 CA cert"}') cp-ca.pem cp-ca.key --ca cp-root.pem --ca-key cp-root.key
+scion-pki certificate create --profile=cp-ca <(echo '{"isd_as": "19-ffaa:1:42", "common_name": "19-ffaa:1:42 CA cert"}') cp-ca.pem cp-ca.key --ca cp-root.pem --ca-key cp-root.key
 popd
 
 # Create AS key and certificate chains
-scion-pki certificate create --profile=cp-as <(echo '{"isd_as": "19-ffaa:1:1", "common_name": "19-ffaa:1:1 AS cert"}') AS16/cp-as.pem AS16/cp-as.key --ca AS16/cp-ca.pem --ca-key AS16/cp-ca.key --bundle
-scion-pki certificate create --profile=cp-as <(echo '{"isd_as": "19-ffaa:1:2", "common_name": "19-ffaa:1:2 AS cert"}') AS17/cp-as.pem AS17/cp-as.key --ca AS17/cp-ca.pem --ca-key AS17/cp-ca.key --bundle
-scion-pki certificate create --profile=cp-as <(echo '{"isd_as": "19-ffaa:1:3", "common_name": "19-ffaa:1:3 AS cert"}') AS18/cp-as.pem AS18/cp-as.key --ca AS16/cp-ca.pem --ca-key AS16/cp-ca.key --bundle
-scion-pki certificate create --profile=cp-as <(echo '{"isd_as": "19-ffaa:1:4", "common_name": "19-ffaa:1:4 AS cert"}') AS19/cp-as.pem AS19/cp-as.key --ca AS16/cp-ca.pem --ca-key AS16/cp-ca.key --bundle
-scion-pki certificate create --profile=cp-as <(echo '{"isd_as": "19-ffaa:1:5", "common_name": "19-ffaa:1:5 AS cert"}') AS20/cp-as.pem AS20/cp-as.key --ca AS17/cp-ca.pem --ca-key AS17/cp-ca.key --bundle
+scion-pki certificate create --profile=cp-as <(echo '{"isd_as": "19-ffaa:1:41", "common_name": "19-ffaa:1:41 AS cert"}') AS16/cp-as.pem AS16/cp-as.key --ca AS16/cp-ca.pem --ca-key AS16/cp-ca.key --bundle
+scion-pki certificate create --profile=cp-as <(echo '{"isd_as": "19-ffaa:1:42", "common_name": "19-ffaa:1:42 AS cert"}') AS17/cp-as.pem AS17/cp-as.key --ca AS17/cp-ca.pem --ca-key AS17/cp-ca.key --bundle
+scion-pki certificate create --profile=cp-as <(echo '{"isd_as": "19-ffaa:1:43", "common_name": "19-ffaa:1:43 AS cert"}') AS18/cp-as.pem AS18/cp-as.key --ca AS16/cp-ca.pem --ca-key AS16/cp-ca.key --bundle
+scion-pki certificate create --profile=cp-as <(echo '{"isd_as": "19-ffaa:1:44", "common_name": "19-ffaa:1:44 AS cert"}') AS19/cp-as.pem AS19/cp-as.key --ca AS16/cp-ca.pem --ca-key AS16/cp-ca.key --bundle
+scion-pki certificate create --profile=cp-as <(echo '{"isd_as": "19-ffaa:1:45", "common_name": "19-ffaa:1:45 AS cert"}') AS20/cp-as.pem AS20/cp-as.key --ca AS17/cp-ca.pem --ca-key AS17/cp-ca.key --bundle
 
 echo 'copying to shared folder'
 cp -r /tmp/tutorial-scion-certs-isd04 /shared/
