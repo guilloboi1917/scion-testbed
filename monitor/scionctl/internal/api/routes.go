@@ -18,4 +18,6 @@ var (
 	CaptureStatusRoute        string = "/api/capture/status"
 
 	GetFileRoute string = "/api/file"
+
+	ConfigASListRoute string = "/api/config/scion/path-policy/aslist"
 )

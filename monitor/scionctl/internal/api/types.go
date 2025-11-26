@@ -22,6 +22,10 @@ type PingStartRequest struct {
 	Count *int   `json:"count,omitempty"`
 }
 
+type ConfigureASListRequest struct {
+	ASList []string `json:"as_list"`
+}
+
 // More specific response which overrides interface{}
 type FileInfosAPIResponse struct {
 	APIResponse
