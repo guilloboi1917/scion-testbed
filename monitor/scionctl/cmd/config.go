@@ -11,7 +11,7 @@ import (
 var ConfigCmd = &cobra.Command{
 	Use:   "config <command>",
 	Short: "Manage SCION node configuration",
-	Long:  `Configure various aspects of SCION nodes including path policies, AS lists, and more`,
+	Long:  `Configure various aspects of SCION nodes ISD lists and AS lists`,
 }
 
 func init() {

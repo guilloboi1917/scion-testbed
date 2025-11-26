@@ -19,7 +19,6 @@ import (
 var (
 	// Global manager variable for nodes
 	CmdNodeManager *config.NodeManager
-	cfgFile        string
 )
 
 // RootCmd represents the base command when called without any subcommands
@@ -56,24 +55,19 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "/home/nodeconfig.yaml", "config file (default is /home/nodeconfig.yaml)")
-
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 func initConfig() {
+	// Use hardcoded config file path
+	configPath := "/home/nodeconfig.yaml"
+	err := config.InitializeManager(configPath)
 
-	// If a config file is found, read it in.
-	if cfgFile != "" {
-		// Use config file from the flag.
-		err := config.InitializeManager(cfgFile)
-
-		if err != nil {
-			fmt.Printf("Error fetching config: %s\n", cfgFile)
-			pprinter.PrintError(err)
-			os.Exit(1)
-		}
+	if err != nil {
+		fmt.Printf("Error fetching config: %s\n", configPath)
+		pprinter.PrintError(err)
+		os.Exit(1)
 	}
 }

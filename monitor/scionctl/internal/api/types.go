@@ -26,6 +26,10 @@ type ConfigureASListRequest struct {
 	ASList []string `json:"as_list"`
 }
 
+type ConfigureISDListRequest struct {
+	ISDList []string `json:"isd_list"`
+}
+
 // More specific response which overrides interface{}
 type FileInfosAPIResponse struct {
 	APIResponse
