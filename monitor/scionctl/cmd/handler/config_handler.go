@@ -138,5 +138,5 @@ func HandleConfigFile(args []string) {
 
 	// Call API
 	resp, err := c.GetConfigFile()
-	pprinter.HTTPResponseToStdout(resp, err)
+	pprinter.HTTPResponseRawToStdout(resp, err)
 }

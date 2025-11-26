@@ -96,3 +96,33 @@ func PrintError(err error) {
 		fmt.Println("Error:", err)
 	}
 }
+
+// HTTPResponseRawToStdout prints the HTTP response body as raw text without JSON formatting
+// Useful for YAML files, plain text, or other non-JSON content
+func HTTPResponseRawToStdout(resp *http.Response, err error) {
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	// Check if response is nil
+	if resp == nil {
+		fmt.Println("Error: nil response received")
+		return
+	}
+
+	defer resp.Body.Close()
+
+	// Read the response body
+	buf := new(strings.Builder)
+	_, copyErr := io.Copy(buf, resp.Body)
+	if copyErr != nil {
+		PrintError(copyErr)
+		return
+	}
+
+	// Print status and raw content
+	fmt.Printf("%s: %s\n", text.FgGreen.Sprint("Response Status"), resp.Status)
+	fmt.Printf("\n%s:\n\n", text.FgCyan.Sprint("Path Policy Configuration"))
+	fmt.Println(buf.String())
+}
