@@ -2,7 +2,7 @@
 FROM --platform=$BUILDPLATFORM debian:12-slim
 
 ARG TARGETARCH
-ARG SCION_VER=0.12.0
+ARG SCION_VER=0.14.0
 ARG RELEASE="https://github.com/scionproto/scion/releases/download/v${SCION_VER}/scion_${SCION_VER}_deb_${TARGETARCH}.tar.gz"
 
 # Tell systemd it's running inside Docker. Without this, systemd may emit warnings
