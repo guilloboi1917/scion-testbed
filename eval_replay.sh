@@ -2,10 +2,12 @@
 node1=scion31
 node2=scion23
 docker exec monitor scionctl capture start $node1 &&
-docker exec monitor scionctl scionping start $node2 $node1 --count 10 &&
-sleep 10 &&
-#docker exec monitor scionctl scionping stop $node2 &&
-#docker exec $node1 scion-bat http://17-ffaa:1:23,[127.0.0.1]:32765/hello &&
+docker exec monitor scionctl scionping start $node2 $node1 &&
+for i in {1..100}; do
+    echo "Replaying capture from $node2 iteration $i"
+  docker exec $node2 tcpreplay -i eth0 /etc/scion/capture10.pcap
+done &&
+docker exec monitor scionctl scionping stop $node2 &&
 docker exec monitor scionctl capture stop $node1 &&
 
 # save capture list to file
@@ -19,5 +21,3 @@ id=$(awk '/\.pcap/ {print $2}' captures/capture_list.txt | tail -n1)
 baseid="${id%}"
 docker exec monitor scionctl capture file $node1 $basename > captures/capture$baseid.pcap
 echo "Capture file exported to captures/capture$baseid.pcap"
-
-#docker exec monitor scionctl capture file $node1 capture_1765385328 > capture10.pcap"

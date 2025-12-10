@@ -42,11 +42,11 @@ func startCapture(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-		request.Interface = "any"
+		request.Interface = "eth1"
 	}
 
 	if request.Interface == "" {
-		request.Interface = "any"
+		request.Interface = "eth1"
 	}
 
 	captureMutex.Lock()
