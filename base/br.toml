@@ -7,5 +7,5 @@ config_dir = "/etc/scion"
 [metrics]
 prometheus = "0.0.0.0:30442"
 
-# [router]
-# bfd.disable = true
+[router]
+bfd.disable = true
