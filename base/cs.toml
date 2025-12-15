@@ -25,5 +25,13 @@ core_registration = "/etc/scion/path-policy.yaml"
 up_registration = "/etc/scion/path-policy.yaml"
 down_registration = "/etc/scion/path-policy.yaml"
 
+[path]
+query_interval = "30s"
+
+#[beaconing]
+#origination_interval = "30s"
+#propagation_interval = "30s"
+#registration_interval = "20s"
+
 # [api]
 # addr = "0.0.0.0:30452"

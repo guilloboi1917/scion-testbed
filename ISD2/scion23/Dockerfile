@@ -8,6 +8,7 @@ RUN cp /opt/tutorial-pki/AS8/*.key /etc/scion/crypto/as/ && \
 
 # Copy AS8 topology and configuration files.
 COPY topology8.json /etc/scion/topology.json
+COPY 24_capture.pcap /etc/scion/DoS.pcap
 
 # If any command in a pipeline fails,
 # it should still return a success status.

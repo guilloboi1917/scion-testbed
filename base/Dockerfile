@@ -23,7 +23,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl wget tar ca-certificates \
     # For development, can delete later
     nano procps \
-    apt-transport-https 
+    apt-transport-https
+
+RUN apt-get update && apt-get install -y --no-install-recommends tcpreplay
 
 # Required for scion-apps-bat
 RUN echo "deb [trusted=yes] https://packages.netsec.inf.ethz.ch/debian all main" | tee /etc/apt/sources.list.d/scionlab.list
